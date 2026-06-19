@@ -2,7 +2,7 @@
 
 **Julia implementation of the SIGMA framework for adaptive traffic signal control.**
 
-> *SIGMA: Symmetry-aware, Intelligent, Geometric, Multi-objective Adaptive traffic control*
+> *SIGMA:Signal Intelligence via Guided Multi-objective Actor-Critic*
 > Indian Statistical Institute, Kolkata & Bangalore — June 2026
 
 ---
