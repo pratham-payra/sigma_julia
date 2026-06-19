@@ -18,10 +18,11 @@ SIGMA is a hierarchical actor-critic architecture for traffic signal control tha
 - **Markovian consistency** — enforces cyclic signal patterns
 
 Key technical contributions:
-- **Pure Julia** implementation with no deep learning framework dependencies
+- **Dual backend** — pure Julia implementation for lightweight deployment; optional TensorFlow/Keras backend (`tf_bridge/`) for full DL training with GPU support
+- **LLM emergency encoder** — LLaMA-2-7B (via HuggingFace) translates plain-language directives into 16-dim priority vectors; rule-based fallback for offline use
 - **C4 rotational augmentation** for orientation-invariant policies (one model, any rotation)
 - **Offline pretraining → online refinement** pipeline for cold-start stability
-- **Native TraCI client** — controls SUMO over TCP with no Python bridge
+- **Native TraCI client** — controls SUMO over TCP with no Python bridge required
 
 ---
 
@@ -43,7 +44,16 @@ sigma_julia/
 │       ├── Pretraining.jl       # Actor CE+utility loss, Critic FQI
 │       ├── OnlineExecution.jl   # Online actor-critic loop + replay buffer
 │       ├── Baselines.jl         # Fixed-Time, Actuated, DQN controllers
-│       └── Evaluation.jl        # KPI aggregation, benchmark table, ablation
+│       ├── Evaluation.jl        # KPI aggregation, benchmark table, ablation
+│       └── LLMBridge.jl         # Julia socket client → Python TF server
+│
+├── tf_bridge/             # Python/TensorFlow backend + LLM bridge
+│   ├── sigma_models.py      # Actor + Critic as tf.keras.Model, ATR, C4, utilities
+│   ├── llm_encoder.py       # LLaMA-2-7B emergency encoder (HuggingFace)
+│   ├── server.py            # JSON socket server — Julia ↔ Python
+│   ├── train.py             # Standalone TF training pipeline
+│   ├── requirements.txt
+│   └── README.md
 │
 └── Sigma_sumo/            # SUMO simulation via TraCI
     ├── main.jl
@@ -86,6 +96,22 @@ julia main.jl --ablation
 
 # Train only, save model
 julia main.jl --train-only
+```
+
+### TF Bridge (Python/TensorFlow + LLaMA-2)
+
+```bash
+pip install -r tf_bridge/requirements.txt
+
+# Standalone TF training (no Julia needed)
+python tf_bridge/train.py
+python tf_bridge/train.py --quick
+python tf_bridge/train.py --use-llm          # real LLaMA-2 emergency encoder
+python tf_bridge/train.py --save sigma_tf    # save Keras weights
+
+# Socket server (for Julia ↔ Python bridge mode)
+python tf_bridge/server.py
+python tf_bridge/server.py --use-llm --device cuda
 ```
 
 ### Sigma_sumo (mock mode — no SUMO required)
