@@ -10,7 +10,10 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d3"
 Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
+JSON3 = "0f8b85d8-7e73-4b9e-9e42-4f817d0bfda0"
 
 [compat]
 julia = "1.6"
 Distributions = "0.25"
+JSON3 = "1"
