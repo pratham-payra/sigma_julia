@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic 4-way intersection for SIGMA SUMO validation.
+     Models a homogeneous Kolkata-style intersection with 3 lanes per approach. -->
+<net version="1.9" junctionCornerDetail="5" limitTurnSpeed="5.50"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-500,-500,500,500"
+              origBoundary="-500,-500,500,500" projParameter="!"/>
+
+    <!-- Edges: 4 approaches, each with 3 lanes (left, straight, right) -->
+    <!-- Naming: E_in = from East into junction; E_out = from junction to East -->
+
+    <!-- East approach (vehicles approaching from East → into junction) -->
+    <edge id="E_in"  from="E_node"  to="J0" priority="1" numLanes="3" speed="13.89">
+        <lane index="0" id="E_in_0" speed="13.89" length="200"/>
+        <lane index="1" id="E_in_1" speed="13.89" length="200"/>
+        <lane index="2" id="E_in_2" speed="13.89" length="200"/>
+    </edge>
+    <edge id="E_out" from="J0"      to="E_node" priority="1" numLanes="3" speed="13.89">
+        <lane index="0" id="E_out_0" speed="13.89" length="200"/>
+        <lane index="1" id="E_out_1" speed="13.89" length="200"/>
+        <lane index="2" id="E_out_2" speed="13.89" length="200"/>
+    </edge>
+
+    <!-- North approach -->
+    <edge id="N_in"  from="N_node"  to="J0" priority="1" numLanes="3" speed="13.89">
+        <lane index="0" id="N_in_0" speed="13.89" length="200"/>
+        <lane index="1" id="N_in_1" speed="13.89" length="200"/>
+        <lane index="2" id="N_in_2" speed="13.89" length="200"/>
+    </edge>
+    <edge id="N_out" from="J0"      to="N_node" priority="1" numLanes="3" speed="13.89">
+        <lane index="0" id="N_out_0" speed="13.89" length="200"/>
+        <lane index="1" id="N_out_1" speed="13.89" length="200"/>
+        <lane index="2" id="N_out_2" speed="13.89" length="200"/>
+    </edge>
+
+    <!-- West approach -->
+    <edge id="W_in"  from="W_node"  to="J0" priority="1" numLanes="3" speed="13.89">
+        <lane index="0" id="W_in_0" speed="13.89" length="200"/>
+        <lane index="1" id="W_in_1" speed="13.89" length="200"/>
+        <lane index="2" id="W_in_2" speed="13.89" length="200"/>
+    </edge>
+    <edge id="W_out" from="J0"      to="W_node" priority="1" numLanes="3" speed="13.89">
+        <lane index="0" id="W_out_0" speed="13.89" length="200"/>
+        <lane index="1" id="W_out_1" speed="13.89" length="200"/>
+        <lane index="2" id="W_out_2" speed="13.89" length="200"/>
+    </edge>
+
+    <!-- South approach -->
+    <edge id="S_in"  from="S_node"  to="J0" priority="1" numLanes="3" speed="13.89">
+        <lane index="0" id="S_in_0" speed="13.89" length="200"/>
+        <lane index="1" id="S_in_1" speed="13.89" length="200"/>
+        <lane index="2" id="S_in_2" speed="13.89" length="200"/>
+    </edge>
+    <edge id="S_out" from="J0"      to="S_node" priority="1" numLanes="3" speed="13.89">
+        <lane index="0" id="S_out_0" speed="13.89" length="200"/>
+        <lane index="1" id="S_out_1" speed="13.89" length="200"/>
+        <lane index="2" id="S_out_2" speed="13.89" length="200"/>
+    </edge>
+
+    <!-- Junction nodes -->
+    <junction id="J0"     type="traffic_light" x="0"    y="0"    shape="-7,-7 7,-7 7,7 -7,7"/>
+    <junction id="E_node" type="dead_end"       x="220"  y="0"/>
+    <junction id="N_node" type="dead_end"       x="0"    y="220"/>
+    <junction id="W_node" type="dead_end"       x="-220" y="0"/>
+    <junction id="S_node" type="dead_end"       x="0"    y="-220"/>
+
+    <!-- Traffic light logic for J0 — 8 phases matching SIGMA ATR
+         linkIndex order: 0=E→N  1=E→W  2=E→S
+                          3=N→W  4=N→S  5=N→E
+                          6=W→S  7=W→E  8=W→N
+                          9=S→E 10=S→N 11=S→W  -->
+    <tlLogic id="J0" type="static" programID="SIGMA" offset="0">
+        <!-- Phase 1: AE1 - All East: EN(0) EW(1) ES(2) -->
+        <phase duration="30" state="GGGrrrrrrrrr"/>
+        <!-- Phase 2: AE2-W - E left+straight: EN(0) EW(1); W straight+left: WE(7) WS(6) -->
+        <phase duration="30" state="GGrrrrrGGrrr"/>
+        <!-- Phase 3: AE3-W - E right: ES(2); W right: WN(8) -->
+        <phase duration="30" state="rrGrrrrrGrrr"/>
+        <!-- Phase 4: AW1 - All West: WS(6) WE(7) WN(8) -->
+        <phase duration="30" state="rrrrrrGGGrrr"/>
+        <!-- Phase 5: AN1 - All North: NW(3) NS(4) NE(5) -->
+        <phase duration="30" state="rrrGGGrrrrrr"/>
+        <!-- Phase 6: AN2-S - N left+straight: NW(3) NS(4); S straight+left: SN(10) SE(9) -->
+        <phase duration="30" state="rrrGGrrrrGGr"/>
+        <!-- Phase 7: AN3-S - N right: NE(5); S right: SW(11) -->
+        <phase duration="30" state="rrrrrGrrrrrG"/>
+        <!-- Phase 8: AS1 - All South: SE(9) SN(10) SW(11) -->
+        <phase duration="30" state="rrrrrrrrrGGG"/>
+    </tlLogic>
+
+    <!-- Connections: all turning movements permitted -->
+    <!-- East incoming → all outgoing -->
+    <connection from="E_in" to="N_out" fromLane="0" toLane="0" tl="J0" linkIndex="0"/>
+    <connection from="E_in" to="W_out" fromLane="1" toLane="1" tl="J0" linkIndex="1"/>
+    <connection from="E_in" to="S_out" fromLane="2" toLane="2" tl="J0" linkIndex="2"/>
+    <!-- North incoming → all outgoing -->
+    <connection from="N_in" to="W_out" fromLane="0" toLane="0" tl="J0" linkIndex="3"/>
+    <connection from="N_in" to="S_out" fromLane="1" toLane="1" tl="J0" linkIndex="4"/>
+    <connection from="N_in" to="E_out" fromLane="2" toLane="2" tl="J0" linkIndex="5"/>
+    <!-- West incoming → all outgoing -->
+    <connection from="W_in" to="S_out" fromLane="0" toLane="0" tl="J0" linkIndex="6"/>
+    <connection from="W_in" to="E_out" fromLane="1" toLane="1" tl="J0" linkIndex="7"/>
+    <connection from="W_in" to="N_out" fromLane="2" toLane="2" tl="J0" linkIndex="8"/>
+    <!-- South incoming → all outgoing -->
+    <connection from="S_in" to="E_out" fromLane="0" toLane="0" tl="J0" linkIndex="9"/>
+    <connection from="S_in" to="N_out" fromLane="1" toLane="1" tl="J0" linkIndex="10"/>
+    <connection from="S_in" to="W_out" fromLane="2" toLane="2" tl="J0" linkIndex="11"/>
+</net>

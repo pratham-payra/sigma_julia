@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Route file for SIGMA SUMO Kolkata intersection.
+     Non-homogeneous Poisson traffic demand with harmonic variation.
+     Emergency vehicles (ambulance/fire/police) injected at low probability.
+     Base demand: ~4 veh/30s per approach (matching paper Table 11). -->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+
+    <!-- Vehicle types -->
+    <vType id="car"       accel="2.6" decel="4.5" sigma="0.5" length="5"  maxSpeed="14" color="0.8,0.8,0.8"/>
+    <vType id="truck"     accel="1.3" decel="4.0" sigma="0.5" length="10" maxSpeed="10" color="0.4,0.4,0.4"/>
+    <vType id="ambulance" accel="2.0" decel="6.0" sigma="0.0" length="6"  maxSpeed="16" color="1,0,0" vClass="emergency"/>
+    <vType id="fire_truck"accel="1.5" decel="5.0" sigma="0.0" length="9"  maxSpeed="14" color="1,0.4,0" vClass="emergency"/>
+    <vType id="police_car"accel="3.0" decel="6.0" sigma="0.0" length="5"  maxSpeed="18" color="0,0,1" vClass="emergency"/>
+
+    <!-- Routes covering all 12 origin-destination pairs -->
+    <route id="E_to_N" edges="E_in N_out"/>
+    <route id="E_to_W" edges="E_in W_out"/>
+    <route id="E_to_S" edges="E_in S_out"/>
+    <route id="N_to_E" edges="N_in E_out"/>
+    <route id="N_to_W" edges="N_in W_out"/>
+    <route id="N_to_S" edges="N_in S_out"/>
+    <route id="W_to_N" edges="W_in N_out"/>
+    <route id="W_to_E" edges="W_in E_out"/>
+    <route id="W_to_S" edges="W_in S_out"/>
+    <route id="S_to_E" edges="S_in E_out"/>
+    <route id="S_to_N" edges="S_in N_out"/>
+    <route id="S_to_W" edges="S_in W_out"/>
+
+    <!-- Regular traffic flow: ~4 veh/30s = 480 veh/h per approach
+         Using flows to match non-homogeneous Poisson demand -->
+
+    <!-- East approach: peak morning (t=0-900s), off-peak (t=900-2700s), peak evening (t=2700-3600s) -->
+    <flow id="E_N_am"  type="car"   route="E_to_N" begin="0"    end="900"  vehsPerHour="600" departLane="0" departPos="base"/>
+    <flow id="E_W_am"  type="car"   route="E_to_W" begin="0"    end="900"  vehsPerHour="600" departLane="1" departPos="base"/>
+    <flow id="E_S_am"  type="car"   route="E_to_S" begin="0"    end="900"  vehsPerHour="400" departLane="2" departPos="base"/>
+    <flow id="E_N_mid" type="car"   route="E_to_N" begin="900"  end="2700" vehsPerHour="300" departLane="0" departPos="base"/>
+    <flow id="E_W_mid" type="car"   route="E_to_W" begin="900"  end="2700" vehsPerHour="300" departLane="1" departPos="base"/>
+    <flow id="E_S_mid" type="car"   route="E_to_S" begin="900"  end="2700" vehsPerHour="200" departLane="2" departPos="base"/>
+    <flow id="E_N_pm"  type="car"   route="E_to_N" begin="2700" end="3600" vehsPerHour="700" departLane="0" departPos="base"/>
+    <flow id="E_W_pm"  type="car"   route="E_to_W" begin="2700" end="3600" vehsPerHour="700" departLane="1" departPos="base"/>
+    <flow id="E_S_pm"  type="car"   route="E_to_S" begin="2700" end="3600" vehsPerHour="500" departLane="2" departPos="base"/>
+
+    <!-- North approach -->
+    <flow id="N_E_am"  type="car"   route="N_to_E" begin="0"    end="900"  vehsPerHour="550" departLane="0" departPos="base"/>
+    <flow id="N_W_am"  type="car"   route="N_to_W" begin="0"    end="900"  vehsPerHour="550" departLane="1" departPos="base"/>
+    <flow id="N_S_am"  type="car"   route="N_to_S" begin="0"    end="900"  vehsPerHour="350" departLane="2" departPos="base"/>
+    <flow id="N_E_mid" type="car"   route="N_to_E" begin="900"  end="2700" vehsPerHour="280" departLane="0" departPos="base"/>
+    <flow id="N_W_mid" type="car"   route="N_to_W" begin="900"  end="2700" vehsPerHour="280" departLane="1" departPos="base"/>
+    <flow id="N_S_mid" type="car"   route="N_to_S" begin="900"  end="2700" vehsPerHour="180" departLane="2" departPos="base"/>
+    <flow id="N_E_pm"  type="car"   route="N_to_E" begin="2700" end="3600" vehsPerHour="650" departLane="0" departPos="base"/>
+    <flow id="N_W_pm"  type="car"   route="N_to_W" begin="2700" end="3600" vehsPerHour="650" departLane="1" departPos="base"/>
+    <flow id="N_S_pm"  type="car"   route="N_to_S" begin="2700" end="3600" vehsPerHour="450" departLane="2" departPos="base"/>
+
+    <!-- West approach -->
+    <flow id="W_E_am"  type="car"   route="W_to_E" begin="0"    end="900"  vehsPerHour="580" departLane="0" departPos="base"/>
+    <flow id="W_N_am"  type="car"   route="W_to_N" begin="0"    end="900"  vehsPerHour="520" departLane="1" departPos="base"/>
+    <flow id="W_S_am"  type="car"   route="W_to_S" begin="0"    end="900"  vehsPerHour="380" departLane="2" departPos="base"/>
+    <flow id="W_E_mid" type="car"   route="W_to_E" begin="900"  end="2700" vehsPerHour="290" departLane="0" departPos="base"/>
+    <flow id="W_N_mid" type="car"   route="W_to_N" begin="900"  end="2700" vehsPerHour="260" departLane="1" departPos="base"/>
+    <flow id="W_S_mid" type="car"   route="W_to_S" begin="900"  end="2700" vehsPerHour="190" departLane="2" departPos="base"/>
+    <flow id="W_E_pm"  type="car"   route="W_to_E" begin="2700" end="3600" vehsPerHour="680" departLane="0" departPos="base"/>
+    <flow id="W_N_pm"  type="car"   route="W_to_N" begin="2700" end="3600" vehsPerHour="620" departLane="1" departPos="base"/>
+    <flow id="W_S_pm"  type="car"   route="W_to_S" begin="2700" end="3600" vehsPerHour="480" departLane="2" departPos="base"/>
+
+    <!-- South approach -->
+    <flow id="S_E_am"  type="car"   route="S_to_E" begin="0"    end="900"  vehsPerHour="510" departLane="0" departPos="base"/>
+    <flow id="S_N_am"  type="car"   route="S_to_N" begin="0"    end="900"  vehsPerHour="510" departLane="1" departPos="base"/>
+    <flow id="S_W_am"  type="car"   route="S_to_W" begin="0"    end="900"  vehsPerHour="330" departLane="2" departPos="base"/>
+    <flow id="S_E_mid" type="car"   route="S_to_E" begin="900"  end="2700" vehsPerHour="260" departLane="0" departPos="base"/>
+    <flow id="S_N_mid" type="car"   route="S_to_N" begin="900"  end="2700" vehsPerHour="260" departLane="1" departPos="base"/>
+    <flow id="S_W_mid" type="car"   route="S_to_W" begin="900"  end="2700" vehsPerHour="165" departLane="2" departPos="base"/>
+    <flow id="S_E_pm"  type="car"   route="S_to_E" begin="2700" end="3600" vehsPerHour="600" departLane="0" departPos="base"/>
+    <flow id="S_N_pm"  type="car"   route="S_to_N" begin="2700" end="3600" vehsPerHour="600" departLane="1" departPos="base"/>
+    <flow id="S_W_pm"  type="car"   route="S_to_W" begin="2700" end="3600" vehsPerHour="420" departLane="2" departPos="base"/>
+
+    <!-- Truck traffic (lighter, ~15% mix) -->
+    <flow id="T_E_W" type="truck" route="E_to_W" begin="0" end="3600" vehsPerHour="80" departLane="1" departPos="base"/>
+    <flow id="T_N_S" type="truck" route="N_to_S" begin="0" end="3600" vehsPerHour="80" departLane="1" departPos="base"/>
+    <flow id="T_W_E" type="truck" route="W_to_E" begin="0" end="3600" vehsPerHour="80" departLane="0" departPos="base"/>
+    <flow id="T_S_N" type="truck" route="S_to_N" begin="0" end="3600" vehsPerHour="80" departLane="1" departPos="base"/>
+
+    <!-- Emergency vehicles: sparse, random insertion (p≈1/20 episode rate)
+         Exact timing handled dynamically by SIGMA; these cover fixed events. -->
+    <vehicle id="emg_0" type="ambulance"  route="N_to_S" depart="450"   departSpeed="max"/>
+    <vehicle id="emg_1" type="fire_truck" route="E_to_W" depart="1200"  departSpeed="max"/>
+    <vehicle id="emg_2" type="police_car" route="W_to_E" depart="1800"  departSpeed="max"/>
+    <vehicle id="emg_3" type="ambulance"  route="S_to_N" depart="2400"  departSpeed="max"/>
+    <vehicle id="emg_4" type="fire_truck" route="N_to_E" depart="3000"  departSpeed="max"/>
+    <vehicle id="emg_5" type="ambulance"  route="E_to_N" depart="3300"  departSpeed="max"/>
+
+</routes>

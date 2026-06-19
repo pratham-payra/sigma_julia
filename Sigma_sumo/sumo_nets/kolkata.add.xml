@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Additional outputs for SIGMA SUMO evaluation metrics -->
+<additional>
+
+    <!-- Lane-area detectors for queue length measurement (50m upstream of stop line) -->
+    <laneAreaDetector id="det_E_0" lane="E_in_0" pos="150" length="50" freq="30" file="det_E.xml"/>
+    <laneAreaDetector id="det_E_1" lane="E_in_1" pos="150" length="50" freq="30" file="det_E.xml"/>
+    <laneAreaDetector id="det_E_2" lane="E_in_2" pos="150" length="50" freq="30" file="det_E.xml"/>
+
+    <laneAreaDetector id="det_N_0" lane="N_in_0" pos="150" length="50" freq="30" file="det_N.xml"/>
+    <laneAreaDetector id="det_N_1" lane="N_in_1" pos="150" length="50" freq="30" file="det_N.xml"/>
+    <laneAreaDetector id="det_N_2" lane="N_in_2" pos="150" length="50" freq="30" file="det_N.xml"/>
+
+    <laneAreaDetector id="det_W_0" lane="W_in_0" pos="150" length="50" freq="30" file="det_W.xml"/>
+    <laneAreaDetector id="det_W_1" lane="W_in_1" pos="150" length="50" freq="30" file="det_W.xml"/>
+    <laneAreaDetector id="det_W_2" lane="W_in_2" pos="150" length="50" freq="30" file="det_W.xml"/>
+
+    <laneAreaDetector id="det_S_0" lane="S_in_0" pos="150" length="50" freq="30" file="det_S.xml"/>
+    <laneAreaDetector id="det_S_1" lane="S_in_1" pos="150" length="50" freq="30" file="det_S.xml"/>
+    <laneAreaDetector id="det_S_2" lane="S_in_2" pos="150" length="50" freq="30" file="det_S.xml"/>
+
+    <!-- Traffic light state output -->
+    <timedEvent type="SaveTLSStates" source="J0" dest="tls_states.xml"/>
+
+    <!-- Full trip info for AEWT/AWT metrics post-processing -->
+    <tripinfo-output value="tripinfo.xml"/>
+
+    <!-- Stop line detectors (induction loops) for throughput -->
+    <inductionLoop id="loop_E" lane="E_in_1" pos="198" freq="30" file="loops.xml"/>
+    <inductionLoop id="loop_N" lane="N_in_1" pos="198" freq="30" file="loops.xml"/>
+    <inductionLoop id="loop_W" lane="W_in_1" pos="198" freq="30" file="loops.xml"/>
+    <inductionLoop id="loop_S" lane="S_in_1" pos="198" freq="30" file="loops.xml"/>
+
+</additional>

@@ -1,0 +1,13 @@
+# Exclude paper folder
+Paper/
+paper_full.txt
+paper_chunk2.txt
+
+# Julia artifacts
+*.jls
+Manifest.toml
+.julia/
+
+# OS
+.DS_Store
+Thumbs.db
