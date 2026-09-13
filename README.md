@@ -1,8 +1,7 @@
 
 **Julia implementation of the SIGMA framework for adaptive traffic signal control.**
 
-> *SIGMA:Signal Intelligence via Guided Multi-objective Actor-Critic*
-> Indian Statistical Institute, Kolkata & Bangalore — June 2026
+
 
 ---
 
@@ -215,8 +214,7 @@ Evaluation vs Fixed-Time · Actuated · DQN
 
 ## Dependencies
 
-Both projects require only Julia standard library + `Distributions.jl`. No GPU, no PyTorch, no Python.
-
+Both projects require only Julia standard library + `Distributions.jl`. 
 ```
 Julia ≥ 1.6
 Distributions.jl
