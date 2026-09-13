@@ -180,13 +180,14 @@ function U_S(pi_t::Vector{Float64}, pi_t1::Vector{Float64})
 end
 
 """
-U_Q: Queue pressure reduction — differentiable max-pressure
-Favors actions that serve high net-pressure movements
+U_Q: Queue pressure reduction — squared gap from max-pressure (Table 1)
+U_Q = (1/4 · π(t)⊤·ATR·Mq - max_{a∈A} 1/4 · a⊤·ATR·Mq)²
+Returns negative value (penalty) consistent with other utilities.
 """
-function U_Q(pi_t1::Vector{Float64}, Mq::Vector{Float64})
-    # project next action onto pressure mask via ATR
-    served_pressure = (ATR' * pi_t1)' * Mq   # dot product of served movements with pressure
-    return served_pressure / (max(maximum(Mq), 1e-6) + 1.0)
+function U_Q(pi_t::Vector{Float64}, Mq::Vector{Float64})
+    served = (ATR' * pi_t)' * Mq           # π⊤·ATR·Mq
+    max_served = maximum(ATR * Mq)           # max over 8 one-hot actions
+    return -((served - max_served) / 4.0)^2
 end
 
 """
@@ -229,7 +230,7 @@ function compute_utilities(
 )
     uM = U_M(pi_t, pi_t1, Q)
     uS = U_S(pi_t, pi_t1)
-    uQ = U_Q(pi_t1, Mq)
+    uQ = U_Q(pi_t, Mq)
     uW = U_W(pi_t1, Gamma)
     uE = U_E(pi_t, theta)
     return (M=uM, S=uS, Q=uQ, W=uW, E=uE)

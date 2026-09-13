@@ -152,10 +152,16 @@ def U_S(pi_t, pi_t1):
     m_t1 = tf.linalg.matvec(tf.transpose(ATR_tf), pi_t1)
     return -tf.reduce_sum(tf.square(m_t1 - m_t), axis=-1)
 
-def U_Q(pi_t1, Mq):
-    """Queue pressure: (ATR^T pi_{t+1})^T Mq / (max(Mq)+1)"""
-    served = tf.linalg.matvec(tf.transpose(ATR_tf), pi_t1)
-    return tf.reduce_sum(served * Mq, axis=-1) / (tf.reduce_max(Mq, axis=-1) + 1.0)
+def U_Q(pi_t, Mq):
+    """Queue pressure reduction: squared gap from max-pressure (Table 1)
+    U_Q = (1/4 · π(t)⊤·ATR·Mq - max_{a∈A} 1/4 · a⊤·ATR·Mq)²
+    Returns negative value (penalty) consistent with other utilities."""
+    served = tf.linalg.matvec(tf.transpose(ATR_tf), pi_t)  # (batch, 16)
+    served_p = tf.reduce_sum(served * Mq, axis=-1)         # π⊤·ATR·Mq
+    # max over 8 one-hot actions: each row of ATR dotted with Mq
+    all_pressures = tf.linalg.matvec(ATR_tf, Mq)            # (batch, 8)
+    max_served = tf.reduce_max(all_pressures, axis=-1)      # max_a(a⊤·ATR·Mq)
+    return -tf.square((served_p - max_served) / 4.0)
 
 def U_W(pi_t1, Gamma):
     """Waiting time fairness: -||dir_served - Gamma/max(Gamma)||^2"""
@@ -174,7 +180,7 @@ def U_E(pi_t, theta):
 
 def compute_utilities(pi_t, pi_t1, Mq, Gamma, theta):
     return (U_M(pi_t, pi_t1), U_S(pi_t, pi_t1),
-            U_Q(pi_t1, Mq),   U_W(pi_t1, Gamma), U_E(pi_t, theta))
+            U_Q(pi_t, Mq),   U_W(pi_t1, Gamma), U_E(pi_t, theta))
 
 def compute_reward(pi_t, pi_t1, Mq, Gamma, theta, alpha=ALPHA_VEC):
     utils = compute_utilities(pi_t, pi_t1, Mq, Gamma, theta)

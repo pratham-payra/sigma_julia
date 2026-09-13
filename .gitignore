@@ -1,7 +1,8 @@
-# Exclude paper folder
+# Exclude paper / text / pdf files
 Paper/
-paper_full.txt
-paper_chunk2.txt
+*.txt
+*.pdf
+extract_pdf.py
 
 # Julia artifacts
 *.jls

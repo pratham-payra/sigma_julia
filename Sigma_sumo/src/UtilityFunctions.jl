@@ -16,10 +16,12 @@ function U_S(pi_t::Vector{Float64}, pi_t1::Vector{Float64})
     return -norm(ATR'*pi_t1 .- ATR'*pi_t)^2
 end
 
-# U_Q: Queue pressure reduction
-function U_Q(pi_t1::Vector{Float64}, Mq::Vector{Float64})
-    served = (ATR'*pi_t1)'*Mq
-    return served / (max(maximum(Mq),1e-6) + 1.0)
+# U_Q: Queue pressure reduction — squared gap from max-pressure (Table 1)
+# U_Q = (1/4 · π(t)⊤·ATR·Mq - max_{a∈A} 1/4 · a⊤·ATR·Mq)²
+function U_Q(pi_t::Vector{Float64}, Mq::Vector{Float64})
+    served = (ATR'*pi_t)'*Mq
+    max_served = maximum(ATR*Mq)
+    return -((served - max_served) / 4.0)^2
 end
 
 # U_W: Waiting time fairness
@@ -40,7 +42,7 @@ end
 
 function compute_utilities(pi_t, pi_t1, Mq, Gamma, theta, Q=Q_TRANSITION)
     return (M=U_M(pi_t,pi_t1,Q), S=U_S(pi_t,pi_t1),
-            Q=U_Q(pi_t1,Mq),    W=U_W(pi_t1,Gamma), E=U_E(pi_t,theta))
+            Q=U_Q(pi_t,Mq),    W=U_W(pi_t1,Gamma), E=U_E(pi_t,theta))
 end
 
 function compute_reward(pi_t, pi_t1, Mq, Gamma, theta,
