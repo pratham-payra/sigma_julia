@@ -227,13 +227,3 @@ Sigma_sumo additionally uses `Sockets.jl` (stdlib) for the TraCI TCP client.
 
 ---
 
-## Citation
-
-```bibtex
-@article{payra2026sigma,
-  title   = {SIGMA: Signal Intelligence via Guided Multi-objective Actor-Critic for Traffic Control},
-  author  = {Payra, Pratham and B, Jagadish and Sen, Tanmay},
-  year    = {2026},
-  institution = {Indian Statistical Institute}
-}
-```
