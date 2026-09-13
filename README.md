@@ -1,4 +1,3 @@
-# SIGMA — Signal Intelligence via Guided Multi-objective Actor-Critic
 
 **Julia implementation of the SIGMA framework for adaptive traffic signal control.**
 
