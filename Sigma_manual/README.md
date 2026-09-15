@@ -1,4 +1,4 @@
-# SIGMA Manual — Signal Intelligence via Guided Multi-objective Actor-Critic
+# SIGMA Manual
 
 Julia implementation of SIGMA for **manual synthetic simulation** (no SUMO required).
 
