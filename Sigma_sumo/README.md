@@ -1,4 +1,4 @@
-# SIGMA SUMO — Signal Intelligence via Guided Multi-objective Actor-Critic
+# SIGMA SUMO
 
 Julia implementation of SIGMA for SUMO traffic simulation.
 
